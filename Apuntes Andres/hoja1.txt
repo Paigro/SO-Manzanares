@@ -1,0 +1,79 @@
+╔══════════════════════════════════════════╗
+║                   USERS                  ║
+╚══════════════════════════════════════════╝
+El prompt es la cadena que muestra la shell esperando comandos.
+Cada usuario puede tener un prompt distinto.
+    $ sudo -i   # inicia una shell como root (cambia usuario y entorno).
+    $ exit      # termina la shell actual y devuelve un código de retorno.
+
+╔══════════════════════════════════════════╗
+║            BUSQUEDAS EN MANUAL           ║
+╚══════════════════════════════════════════╝
+Secciones importantes:
+$ man man
+    - NAME: nombre y descripción breve
+    - SYNOPSIS: forma de uso
+    - DESCRIPTION: descripción detallada
+    - OPTIONS: opciones disponibles
+    - SEE ALSO: comandos relacionados
+
+$ man 1 time   # Comando de usuario
+$ man 2 time   # Llamada al sistema
+
+# Busqueda por tema
+$ man -k <palabra clave>    # Busca una palabra clave                       [man -k time ]
+$ apropos <palabra clave>   # Igual que man -k                              [apropos time]
+$ whatis <palabra clave>    # Devielve una descripcion corta del comando    [whatis time ]
+$ sudo mandb                # Actualiza la base de datos, necesita ser root o sudo
+
+╔══════════════════════════════════════════╗
+║            VARIABLES Y ENTORNO           ║
+╚══════════════════════════════════════════╝
+$ env   # Consulta el entorno de la shell (Variables de entorno)
+            |       |
+            v       v
+    $USER  # usuario
+    $UID   # id del usuario
+    $HOME  # directorio personal
+    $PWD   # directorio actual
+    $SHELL # shell por defecto
+    $?     # Contiene el código de salida del último comando
+    $$     # PID del proceso actual (shell).
+    $PPID  # PID del padre
+    $PATH  # rutas de búsqueda
+
+Definir una variable nombre=valor ¡¡CUIDADO CON LOS ESPACIOS, NO DEBE HABER!!
+
+con $ antes de una variable obtenemos su valor
+Podemos aislar el valor de una variable 
+    - variable=1+1
+    - ${variable}2 => resulte en "1+1=2"
+PS1 cambia el prompt del bash ( mirar man bash)
+
+$ echo $PATH
+$ export PATH=$PATH:$PWD
+
+Diferencia entre "./" y "$PWD":
+    ./      ruta relativa, insegura
+    $PWD    ruta absoluta, recomendada
+
+$ which bash                # Indica el ejecutable que se lanza buscando en el PATH, pero no detecta comandos internos.
+$ type bash cd echo test    # Indica como interpreta la shell un comando
+                    # built-in
+                    # ejecutable externo
+                    # alias
+                    # función
+
+$ type es más completo y más correcto para saber qué se ejecuta realmente. Tipos:
+    - Alias	    # Atajo definido por el usuario
+    - Función   # Código bash reutilizable
+    - Built-in  # Comando interno de la shell
+    - Externo   # Fichero ejecutable
+    - Keyword   # Palabra de la sintaxis bash
+
+╔══════════════════════════════════════════╗
+║       MANEJO DE CADENAS Y FICHEROS       ║
+╚══════════════════════════════════════════╝
+$ echo -e # habilita la interpretacion de la cadena de texto
+$ echo -e "zorro\npájaro\nvaca\ncaballo\nabeja" > texto1 # Vuelca la salida al archivo texto1
+$ sort texto1                                            # Ordena el contenido de texto1
