@@ -103,7 +103,7 @@ $ wc texto1 texto2 texto3   # Consulta cantidad de lineas - palabras - caractere
     - wc -L texto1    # longitud de la línea más larga
 
 
-[        ls         ]
+[-------------- ls --------------]
 $ ls -l *.txt         # muestra informacion de los ficheros acabados en .txt
     -l  # Listado largo: permisos, enlaces, propietario, grupo, tamaño, fecha y nombre
     -a  # Muestra todos los ficheros, incluidos los ocultos (empiezan por .)
@@ -186,8 +186,8 @@ mv <origen> <origen2> <destino_directorio>  # Mueve o renombra ficheros y direct
 ║          BUSQUEDA DE FICHEROS            ║
 ╚══════════════════════════════════════════╝
 
-[        find         ]
-find <ruta_de_búsqueda> # Busqueda de ficheros (recursivo)
+[-------------- find --------------]
+$ find <ruta_de_búsqueda> # Busqueda de ficheros (recursivo)
 BUSQUEDA POR NOMBRE
     -name "archivo.txt"     # Busca por nombre exacto
     -iname "archivo.txt"    # Busca ignorando mayúsculas/minúsculas
@@ -219,7 +219,7 @@ OPERADORES LOGICOS
 ║  REDIRECCIONES TUBERIAS Y EXPRESIONES REGULARES     ║
 ╚═════════════════════════════════════════════════════╝
 
-Todo lo descrito a continuación se usa para complementar comandos y redirigir salidas.
+Todo lo descrito a continuación se usa para complementar comandos y redirigir salidas
 
 DESCRIPTORES DE ARCHIVO
     0 # Entrada estándar (stdin) - Teclado
@@ -228,22 +228,102 @@ DESCRIPTORES DE ARCHIVO
 OPERADORES DE REDIRECCIÓN
     >                     # Redirige la salida estándar a un fichero (sobrescribe/trunca)
     >>                    # Redirige la salida estándar a un fichero (añade al final/append)
-    2>                    # Redirige solo los errores a un fichero
-    2>>                   # Añade los errores al final de un fichero
-    &> o > archivo 2>&1   # Redirige tanto la salida estándar como los errores al mismo sitio
+    2>                    # Redirige solo los errores (descriptor 2) a un fichero
+    2>>                   # Añade los errores (descriptor 2) al final de un fichero
+    &> ó > archivo 2>&1   # Redirige la salida estándar (descriptor 1) a archivo, redirige los errores (descriptor 2) a donde apunta la salida estandar
     <                     # Redirige la entrada estándar desde un fichero hacia un comando
     | (Tubería/Pipe)      # Pasa la salida de un comando como entrada al siguiente
 DISPOSITIVOS ESPECIALES
-    /dev/null # El "agujero negro" del sistema. Se usa para descartar salidas no deseadas.
+    /dev/null   # El "agujero negro" del sistema. Se usa para descartar salidas no deseadas
 COMANDOS DE INSPECCION Y FILTRO
-    cat         # Muestra el contenido de un archivo.
-    sort        # Ordena las líneas de un texto o archivo.
-    grep        # Busca patrones (texto o expresiones regulares) dentro de archivos.
-    echo $?     # Muestra el código de salida del último comando ejecutado (0 = éxito).
+    cat         # Muestra el contenido de un archivo
+    sort        # Ordena las líneas de un texto o archivo
+    grep        # Busca patrones (texto o expresiones regulares) dentro de archivos
+    echo $?     # Muestra el código de salida del último comando ejecutado (0 = éxito)
 EXPRESIONES REGULARES
-    .       # Representa cualquier carácter único.
-    *       # El carácter anterior se repite 0 o más veces.
-    $       # Indica el final de una línea (ej. ja$ busca palabras que terminan en ja).
-    ^       # Indica el inicio de una línea.
-    [ ]     # Define un rango o conjunto de caracteres (ej. [a-z]).
-    {n,m}   # El carácter anterior se repite entre n y m veces (requiere grep -E).
+    .       # Representa cualquier carácter único
+    *       # El carácter anterior se repite 0 o más veces
+    $       # Indica el final de una línea [ja$ busca palabras que terminan en ja]
+    ^       # Indica el inicio de una línea
+    [ ]     # Define un rango o conjunto de caracteres [a-z]
+    {n,m}   # El carácter anterior se repite entre n y m veces (requiere grep -E)
+
+[-------------- GREP --------------]
+$ grep <patron> <fichero1> <fichero2>   # Busca líneas que coincidan con un patrón (expresión regular)
+                                        # Imprime las líneas que contienen el patrón
+                                        # El patrón puede ser texto literal o una expresión regular
+    -i              # Ignora mayúsculas y minúsculas
+    -v              # Muestra las líneas que NO coinciden con el patrón
+    -n              # Muestra el número de línea
+    -c              # Cuenta el número de líneas que coinciden
+    -l              # Muestra solo los nombres de ficheros que coinciden
+    -w              # Busca palabras completas
+    -r              # Búsqueda recursiva en directorios
+    -E              # Usa expresiones regulares extendidas (egrep)
+    -F              # Búsqueda de texto literal (sin expresiones regulares)
+    --color=auto    # Resalta las coincidencias
+
+╔═════════════════════════════════════════════════════╗
+║               PROGRAMACIÓN EN SHELL                 ║
+╚═════════════════════════════════════════════════════╝
+
+SCRIPT SHELL
+Fichero de texto que contiene comandos de bash y se ejecuta como un programa.
+
+Primera línea del script. Indica qué intérprete debe ejecutar el script.
+#!/bin/bash
+--
+    chmod +x script.sh  # Otorga permiso de ejecución a un script
+
+Ejecuta el script desde el directorio actual
+./script.sh
+
+variable=$(comando)
+Guarda la salida estándar del comando en una variable
+--
+    cut -d':' -f1 fichero   # Divide líneas usando un delimitador y selecciona campos útil para procesar texto
+    seq 1 5 # Genera una secuencia de números (1 2 3 4 5)
+
+========= ARGUMENTOS =========
+$0      # Nombre del script
+$1      # Primer argumento pasado al script
+$2      # Segundo argumento pasado al script
+$#      # Número total de argumentos
+$@      # Lista de todos los argumentos
+
+======= CÓDIGO DE SALIDA =======
+    exit N  # Finaliza el script devolviendo el código N.
+            # 0  → ejecución correcta
+            # ≠0 → error
+
+======= CONDICIONALES =======
+    if [ condición ]; then
+        comandos
+    else
+        comandos
+    fi
+CONDICIONES COMUNES
+    -f fichero              # Verdadero si existe y es un fichero regular
+    -d directorio           # Verdadero si es un directorio
+    -e ruta                 # Verdadero si existe
+    -ne / -eq / -lt / -gt   # Comparaciones numéricas
+
+======= BUCLES =======
+Foreach itera sobre una lista de valores o ficheros.
+for var in lista; do
+    comandos
+done
+For en rango
+for ((i=0; i<5; i++)); do
+    echo $i
+done
+
+======= FUNCIONES =======
+function nombre(){
+    comandos
+}
+nombre(){
+    comandos
+}
+LLAMADA
+nombre_funcion argumento1 argumento2...
