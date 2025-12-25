@@ -353,3 +353,46 @@ done < fichero.txt
 === ENTRADA ESTÁNDAR ===
 La entrada que recibe read normalmente viene del teclado,
 pero puede redirigirse desde un fichero o una tubería.
+
+
+╔═════════════════════════════════════════════════════╗
+║             API DEL SISTEMA OPERATIVO               ║
+╚═════════════════════════════════════════════════════╝
+
+$ gcc error error.c     # Compila un script en c
+    -g  # Incluye símbolos para depurar
+    -o  # Nombre del ejecutable
+$ gdb ./error           # Debugea el script
+    list            # Muestra el código
+    break <línea>   # Pone un punto de parada
+    run             # Ejecuta el programa
+    step            # Entra en funciones
+    next            # Avanza línea a línea
+    print <var>       # Muestra el valor de una variable
+    Gestión de errores
+
+$ open  # Devuelve descriptor ≥ 0 -> éxito
+        # Devuelve descriptor -1 -> error
+
+GESTIÓN DE ERRORES
+if (fd == -1) {
+    perror("open");
+    return 1;
+}
+errno       # Variable global con el código de error definida en <errno.h>
+strerror(3) # Convierte errno en un mensaje legible
+
+LIBRERIAS Y LLAMADAS AL SISTEMA
+id          # Comando que muestra información del usuario
+getpwuid    # Función de librería que devuelve información de un usuario (Nombre, grupo y directorio home)
+getuid      # Llamada al sistema que obtiene el ID del usuario actual
+mi_id       # Con argumento -> muestra datos del usuario
+            # Sin argumento -> usa el UID del proceso
+
+INFORMACION DEL SISTEMA
+uname(1)    # Comando que muestra información del sistema
+uname(2)    # Llamada al sistema que obtiene:
+        # Nombre del SO
+        # Versión del kernel
+        # Nombre del host
+        # Arquitectura
