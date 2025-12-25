@@ -140,12 +140,81 @@ $ tr        # Traslada o modifica caracteres
 ║          SISTEMA DE FICHEROS             ║
 ╚══════════════════════════════════════════╝
 
+=========== DIRECTORIO DE TRABAJO =============
 $ cd    # Mueve el directorio del usuario
-    -   # Mueve al directorio anterior
+    -       # Mueve al directorio anterior
 $ pwd   # Devuelve el path al directorioactual (Equivalente a la variable PWD)
+
+======= MANEJO DE FICHEROS/DIRECTORIOS =======
 $ mkdir # Crea un directorio
-    -p	        # Crea directorios intermedios si no existen
-    -v	        # Muestra un mensaje por cada directorio creado (verbose)
-    -m	        # Establece permisos al crear el directorio (en octal)
-    
-    
+    -p	    # Crea directorios intermedios si no existen
+    -v	    # Muestra un mensaje por cada directorio creado (verbose)
+    -m	    # Establece permisos al crear el directorio (en octal)
+$ rmdir # Elimina un directorio vacio
+    -p      # Elimina el directorio y sus directorios padre si quedan vacíos
+    -v      # Muestra un mensaje por cada directorio eliminado.
+$ rm    # Elimina ficheros y directorios, borra ficheros, no pide confirmación por defecto
+    -r      # Borra directorios y su contenido de forma recursiva
+    -i      # Pregunta antes de borrar cada fichero
+    -f      # Fuerza el borrado sin preguntar (ignora errores)
+    -v      # Muestra qué se borra (modo detallado)
+    -d      # Borra directorios vacíos (similar a rmdir)
+
+--one-file-system
+No cruza a otros sistemas de ficheros al borrar
+$ cp <fichero_origen> <fichero_destino>                      # Copia un fichero
+$ cp <fichero_origen> <fichero_origen2> <destino_directorio> # Copia varios ficheros
+    -r      # Copia directorios de forma recursiva
+    -i      # Pregunta antes de sobrescribir un fichero existente
+    -f      # Fuerza la copia, sobrescribiendo sin preguntar
+    -v      # Muestra qué ficheros se copian (verbose)
+    -p      # Preserva atributos: permisos, propietario y fechas
+    -a      # Modo archivo (archive): equivalente a -r -p y conserva enlaces
+    -u      # Copia solo si el fichero origen es más nuevo
+    -t <DIR># specifica el directorio destino explícitamente
+mv <origen> <origen2> <destino_directorio>  # Mueve o renombra ficheros y directorios
+                                            # Si destino no existe -> renombra
+                                            # Si destino es un directorio -> mueve dentro
+    -i      # Pregunta antes de sobrescribir un fichero existente
+    -f      # Fuerza el movimiento, sobrescribiendo sin preguntar
+    -v      # Muestra qué se mueve (verbose)
+    -n      # No sobrescribe ficheros existentes
+    -t <DIR># Especifica explícitamente el directorio destino
+
+
+╔══════════════════════════════════════════╗
+║          BUSQUEDA DE FICHEROS            ║
+╚══════════════════════════════════════════╝
+
+[        find         ]
+find <ruta_de_búsqueda> # Busqueda de ficheros (recursivo)
+BUSQUEDA POR NOMBRE
+    -name "archivo.txt"     # Busca por nombre exacto
+    -iname "archivo.txt"    # Busca ignorando mayúsculas/minúsculas
+    -name "*.pdf"           # Busca archivos con extensión .pdf usando comodines
+BUSQUEDA POR TIPO
+    -type f     # Busca solo archivos
+    -type d     # Busca solo directorios
+    -type l     # Busca enlaces simbólicos
+BUSQUEDA POR TAMAÑO
+    -size +100M     # Archivos mayores a 100 Megabytes (c, b, k, M y G | + ó -)
+BUSQUEDA POR TIEMPO
+    -mtime -7   # Modificados en los últimos 7 días.
+    -mmin -60   # Modificados en los últimos 60 minutos.
+    -atime -1   # Accedidos en el último día.
+BUSQUEDA POR USUARIO Y PERMISO
+    -user usuario   # Archivos que pertenecen a un usuario específico.
+    -perm 777       # Archivos con permisos 777.
+ACCIONES SOBRE RESULTADOS
+    -delete                 # Borra los archivos encontrados
+    -exec [comando] {} \;   # Ejecuta un comando sobre cada resultado
+    -ls                     # Muestra información detallada (tipo ls -dils)
+OPERADORES LOGICOS
+    -o          # Operador OR 
+    -not ó -!    # Operador NOT
+    -a          # Operador AND (es el comportamiento por defecto)
+
+
+╔═════════════════════════════════════════════════════╗
+║  REDIRECCIONES TUBERIAS Y EXPRESIONES REGULARES     ║
+╚═════════════════════════════════════════════════════╝
