@@ -327,3 +327,29 @@ nombre(){
 }
 LLAMADA
 nombre_funcion argumento1 argumento2...
+
+$ sed       # Edita texto, usado para borrar registros
+
+# Esto es una especie de switch interactivo:
+select  # Crea un menú interactivo
+case    # Ejecuta acciones según la opción elegida
+break   # Sale del menú (select)
+
+[----- read -----]
+$ read <VAR1> <VAR2> <VAR3>     # Comando de bash que lee una línea desde la entrada estándar y guarda el valor en una o varias variables
+                                # read devuelve 0  -> lectura correcta
+                                # read devuelve ≠0 -> fin de fichero o error
+    -p "Mensaje: " <VAR>    # Muestra un mensaje antes de leer la entrada
+    -s <VAR>                # No muestra lo que el usuario escribe (contraseñas)
+    -t <SEG> <VAR>          # Espera un número limitado de segundos
+    -n 1 <VAR>              # Lee un único carácter
+    -r <VARIABLE>           # Evita que \ sea interpretado como carácter especial
+
+LECTURA DESDE UN FICHERO
+while read -r LINEA; do
+    echo "$LINEA"
+done < fichero.txt
+
+=== ENTRADA ESTÁNDAR ===
+La entrada que recibe read normalmente viene del teclado,
+pero puede redirigirse desde un fichero o una tubería.
