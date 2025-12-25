@@ -1,3 +1,8 @@
+[       Utils de comandos       ]
+
+*   Las opciones cortas pueden combinarse detrás de un solo - siempre que no haya ambigüedad. 
+    Las opciones que requieren argumento deben ir seguidas de su valor.
+
 ╔══════════════════════════════════════════╗
 ║                   USERS                  ║
 ╚══════════════════════════════════════════╝
@@ -5,6 +10,7 @@ El prompt es la cadena que muestra la shell esperando comandos.
 Cada usuario puede tener un prompt distinto.
     $ sudo -i   # inicia una shell como root (cambia usuario y entorno).
     $ exit      # termina la shell actual y devuelve un código de retorno.
+
 
 ╔══════════════════════════════════════════╗
 ║            BUSQUEDAS EN MANUAL           ║
@@ -26,9 +32,12 @@ $ apropos <palabra clave>   # Igual que man -k                              [apr
 $ whatis <palabra clave>    # Devielve una descripcion corta del comando    [whatis time ]
 $ sudo mandb                # Actualiza la base de datos, necesita ser root o sudo
 
+
 ╔══════════════════════════════════════════╗
 ║            VARIABLES Y ENTORNO           ║
 ╚══════════════════════════════════════════╝
+
+=============== VARIABLES =================
 $ env   # Consulta el entorno de la shell (Variables de entorno)
             |       |
             v       v
@@ -57,6 +66,7 @@ Diferencia entre "./" y "$PWD":
     ./      ruta relativa, insegura
     $PWD    ruta absoluta, recomendada
 
+======= INFORMACION SOBRE COMANDOS Y VARIABLES ===========
 $ which bash                # Indica el ejecutable que se lanza buscando en el PATH, pero no detecta comandos internos.
 $ type bash cd echo test    # Indica como interpreta la shell un comando
                     # built-in
@@ -71,9 +81,71 @@ $ type es más completo y más correcto para saber qué se ejecuta realmente. Ti
     - Externo   # Fichero ejecutable
     - Keyword   # Palabra de la sintaxis bash
 
+
 ╔══════════════════════════════════════════╗
 ║       MANEJO DE CADENAS Y FICHEROS       ║
 ╚══════════════════════════════════════════╝
+
+============== CONTENIDO ================
 $ echo -e # habilita la interpretacion de la cadena de texto
 $ echo -e "zorro\npájaro\nvaca\ncaballo\nabeja" > texto1 # Vuelca la salida al archivo texto1
 $ sort texto1                                            # Ordena el contenido de texto1
+
+$ cat  "archivo"    # muestra el contenido del archivo
+    - cat  "archivo1" "archivo2" "archivo3" > "archivodestino"   # muestra el contenido del archivo
+
+=========== INFORMACION DEL FICHERO =============
+$ wc texto1 texto2 texto3   # Consulta cantidad de lineas - palabras - caracteres - nombre
+    - wc -l texto1    # solo líneas
+    - wc -w texto1    # solo palabras
+    - wc -c texto1    # solo bytes (1 byte = 1 character)
+    - wc -m texto1    # caracteres (importante con UTF-8)
+    - wc -L texto1    # longitud de la línea más larga
+
+
+[        ls         ]
+$ ls -l *.txt         # muestra informacion de los ficheros acabados en .txt
+    -l  # Listado largo: permisos, enlaces, propietario, grupo, tamaño, fecha y nombre
+    -a  # Muestra todos los ficheros, incluidos los ocultos (empiezan por .)
+    -h  # Muestra tamaños legibles (K, M, G). Se usa junto con  -l.
+    -R  # Listado recursivo de directorios
+    -d  # Muestra el directorio como entrada, no su contenido
+    -i  # Muestra el número de inodo de cada fichero
+    -F  # Añade un carácter al final según el tipo:
+            / directorio
+            * ejecutable
+            @ enlace simbólico
+    -p  #Añade / al final de los directorios
+OPCIONES DE ORDENACIÓN    
+    -t  # Ordena por fecha de modificación (más reciente primero)
+    -S  # Ordena por tamaño (mayor primero)
+    -X  # Ordena por extensión
+    -r  # Invierte el orden del listado
+OPCIONES DE FORMATO    
+    -1              # Muestra un fichero por línea
+    --color=auto    # Muestra colores según el tipo de fichero 
+    -C              # Muestra el listado en columnas (por defecto)
+
+$ dmesg	    # Muestra mensajes del kernel (necesita permisos de root/sudo)
+$ wc -l	    # Cuenta líneas
+$ head -<n> # Muestra primeras n líneas
+$ tail -<n> # Muestra últimas n líneas
+$ tail -f   # Sigue el fichero en tiempo real (se corta si se modifica o trunca el archivo)
+$ tail -F   # Sigue el fichero aunque se recree (reintenta conectar con el archivo continuamente)
+
+$ tr        # Traslada o modifica caracteres
+
+
+╔══════════════════════════════════════════╗
+║          SISTEMA DE FICHEROS             ║
+╚══════════════════════════════════════════╝
+
+$ cd    # Mueve el directorio del usuario
+    -   # Mueve al directorio anterior
+$ pwd   # Devuelve el path al directorioactual (Equivalente a la variable PWD)
+$ mkdir # Crea un directorio
+    -p	        # Crea directorios intermedios si no existen
+    -v	        # Muestra un mensaje por cada directorio creado (verbose)
+    -m	        # Establece permisos al crear el directorio (en octal)
+    
+    
