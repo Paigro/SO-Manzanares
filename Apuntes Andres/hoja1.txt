@@ -218,3 +218,32 @@ OPERADORES LOGICOS
 ╔═════════════════════════════════════════════════════╗
 ║  REDIRECCIONES TUBERIAS Y EXPRESIONES REGULARES     ║
 ╚═════════════════════════════════════════════════════╝
+
+Todo lo descrito a continuación se usa para complementar comandos y redirigir salidas.
+
+DESCRIPTORES DE ARCHIVO
+    0 # Entrada estándar (stdin) - Teclado
+    1 # Salida estándar (stdout) - Pantalla
+    2 # Salida de error (stderr) - Pantalla (mensajes de error)
+OPERADORES DE REDIRECCIÓN
+    >                     # Redirige la salida estándar a un fichero (sobrescribe/trunca)
+    >>                    # Redirige la salida estándar a un fichero (añade al final/append)
+    2>                    # Redirige solo los errores a un fichero
+    2>>                   # Añade los errores al final de un fichero
+    &> o > archivo 2>&1   # Redirige tanto la salida estándar como los errores al mismo sitio
+    <                     # Redirige la entrada estándar desde un fichero hacia un comando
+    | (Tubería/Pipe)      # Pasa la salida de un comando como entrada al siguiente
+DISPOSITIVOS ESPECIALES
+    /dev/null # El "agujero negro" del sistema. Se usa para descartar salidas no deseadas.
+COMANDOS DE INSPECCION Y FILTRO
+    cat         # Muestra el contenido de un archivo.
+    sort        # Ordena las líneas de un texto o archivo.
+    grep        # Busca patrones (texto o expresiones regulares) dentro de archivos.
+    echo $?     # Muestra el código de salida del último comando ejecutado (0 = éxito).
+EXPRESIONES REGULARES
+    .       # Representa cualquier carácter único.
+    *       # El carácter anterior se repite 0 o más veces.
+    $       # Indica el final de una línea (ej. ja$ busca palabras que terminan en ja).
+    ^       # Indica el inicio de una línea.
+    [ ]     # Define un rango o conjunto de caracteres (ej. [a-z]).
+    {n,m}   # El carácter anterior se repite entre n y m veces (requiere grep -E).
