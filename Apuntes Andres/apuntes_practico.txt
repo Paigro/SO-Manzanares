@@ -5,8 +5,8 @@
 
 *   ~   representa el directorio home del usuario
 
-STDIN_FILENO    # entrada estandar
-STDOUT_FILENO   # salida estandar
+STDIN_FILENO  = 0   # entrada estandar
+STDOUT_FILENO = 1   # salida estandar
 
 
 ╔══════════════════════════════════════════╗

@@ -1,5 +1,4 @@
-// EJERCICIO 8 HOJA 2
-
+// HOJA2 EJERCICIO 8
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -27,10 +26,14 @@ int main(int argc, char *argv[]){
 		d_in = open(input_file,O_RDONLY);
 	}
 	// creamos el descriptor de salida.
-	if(strcmp(input_file, "-")==0){
+	if(strcmp(output_file, "-")==0){
 		d_out = 0;
 	} else{
 		d_out =open(output_file,O_WRONLY|O_CREAT|O_TRUNC, 0664);
+	}
+	// Salta seek bloques en la lectura y escritura.
+	if(seek >0){
+	lseek(d_out, (off_t)seek * block_size, SEEK_SET);
 	}
 	// Total de bytes leidos
 	int total_bytes = 0;
@@ -55,21 +58,16 @@ int main(int argc, char *argv[]){
 		} else {
 			total_bytes += actual_bytes;
 		}
-	}
-
-
-	while(total_bytes>0){
+		// Escritura
 		int bytes_escritos = 0;
-		while (bytes_escritos < block_size){
+		while (bytes_escritos < actual_bytes){
 			int n_write = write (d_out,
-						buffer + (total_bytes - bytes_escritos),
-						block_size - bytes_escritos);
+						buffer +  bytes_escritos,
+						actual_bytes  - bytes_escritos);
 			if (n_write == 0) break; // no se ha escrito, salimos del buffer
 			printf("total bytes %i || n write %i\n", total_bytes, n_write);
 			bytes_escritos += n_write;
 		}
-		if (bytes_escritos == 0) break; // no hay nada que escribir
-		total_bytes -= bytes_escritos;
 	}
 	// cerramos los descriptores
 	close(d_in);
@@ -77,4 +75,5 @@ int main(int argc, char *argv[]){
 	return 0;
 
 }
+
 
