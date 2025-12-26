@@ -1,15 +1,21 @@
-[       Utils de comandos       ]
+[       Utils       ]
 
 *   Las opciones cortas pueden combinarse detrás de un solo - siempre que no haya ambigüedad. 
-    Las opciones que requieren argumento deben ir seguidas de su valor.
+    Las opciones que requieren argumento deben ir seguidas de su valor
+
+*   ~   representa el directorio home del usuario
+
+STDIN_FILENO    # entrada estandar
+STDOUT_FILENO   # salida estandar
+
 
 ╔══════════════════════════════════════════╗
 ║                   USERS                  ║
 ╚══════════════════════════════════════════╝
-El prompt es la cadena que muestra la shell esperando comandos.
-Cada usuario puede tener un prompt distinto.
-    $ sudo -i   # inicia una shell como root (cambia usuario y entorno).
-    $ exit      # termina la shell actual y devuelve un código de retorno.
+El prompt es la cadena que muestra la shell esperando comandos
+Cada usuario puede tener un prompt distinto
+    $ sudo -i   # inicia una shell como root (cambia usuario y entorno)
+    $ exit      # termina la shell actual y devuelve un código de retorno
 
 
 ╔══════════════════════════════════════════╗
@@ -47,7 +53,7 @@ $ env   # Consulta el entorno de la shell (Variables de entorno)
     $PWD   # directorio actual
     $SHELL # shell por defecto
     $?     # Contiene el código de salida del último comando
-    $$     # PID del proceso actual (shell).
+    $$     # PID del proceso actual (shell)
     $PPID  # PID del padre
     $PATH  # rutas de búsqueda
 
@@ -273,7 +279,7 @@ Fichero de texto que contiene comandos de bash y se ejecuta como un programa.
 Primera línea del script. Indica qué intérprete debe ejecutar el script.
 #!/bin/bash
 --
-    chmod +x script.sh  # Otorga permiso de ejecución a un script
+    chmod +x script.sh      # Otorga permiso de ejecución a un script
 
 Ejecuta el script desde el directorio actual
 ./script.sh
@@ -281,8 +287,31 @@ Ejecuta el script desde el directorio actual
 variable=$(comando)
 Guarda la salida estándar del comando en una variable
 --
-    cut -d':' -f1 fichero   # Divide líneas usando un delimitador y selecciona campos útil para procesar texto
-    seq 1 5 # Genera una secuencia de números (1 2 3 4 5)
+    cut -d':' -f1 fichero   # Divide líneas usando un delimitador y selecciona campos, útil para procesar texto
+    seq 1 5                 # Genera una secuencia de números (1 2 3 4 5)
+[-------------- cut --------------]
+$ cut <opciones> <archivo>   # Extrae secciones de cada línea de ficheros
+
+SELECCIÓN POR CAMPOS (Básico para archivos delimitados)
+    -d ":"      # Define el delimitador de campos (por defecto es el tabulador)
+    -f 1        # Selecciona solo el primer campo
+    -f 1,3      # Selecciona los campos 1 y 3
+    -f 1-3      # Selecciona el rango de campos del 1 al 3
+    -f 2-       # Selecciona desde el campo 2 hasta el final de la línea
+
+SELECCIÓN POR CARACTERES
+    -c 1        # Selecciona solo el primer carácter
+    -c 1,5,10   # Selecciona los caracteres en las posiciones 1, 5 y 10
+    -c 1-10     # Selecciona el rango de caracteres del 1 al 10
+    -c 5-       # Selecciona desde la posición 5 hasta el final de la línea
+
+SELECCIÓN POR BYTES
+    -b 1-10     # Selecciona el rango de bytes del 1 al 10
+
+OTRAS OPCIONES
+    -s          # No imprime líneas que no contengan el delimitador
+    --complement    # Invierte la selección (extrae todo excepto lo indicado)
+    --output-delimiter=","  # Cambia el delimitador en la salida generada
 
 ========= ARGUMENTOS =========
 $0      # Nombre del script
@@ -359,9 +388,9 @@ pero puede redirigirse desde un fichero o una tubería.
 ║             API DEL SISTEMA OPERATIVO               ║
 ╚═════════════════════════════════════════════════════╝
 
-$ gcc error error.c     # Compila un script en c
-    -g  # Incluye símbolos para depurar
-    -o  # Nombre del ejecutable
+$ gcc error.c     # Compila un script en c
+    -g          # Incluye símbolos para depurar
+    -o <NOMB>   # Nombre del ejecutable
 $ gdb ./error           # Debugea el script
     list            # Muestra el código
     break <línea>   # Pone un punto de parada
@@ -396,3 +425,88 @@ uname(2)    # Llamada al sistema que obtiene:
         # Versión del kernel
         # Nombre del host
         # Arquitectura
+
+
+╔═════════════════════════════════════════════════════╗
+║          MANEJO DE FICHEROS Y DIRECTORIOS           ║
+╚═════════════════════════════════════════════════════╝
+
+$ stat <fichero/directorio>  # Comando que muestra información detallada de un fichero o directorio, obtenida directamente del sistema de ficheros.
+    -c  # Formato personalizado de salida
+        %a   # Permisos en octal
+        %A   # Permisos en texto
+        %s   # Tamaño en bytes
+        %y   # Fecha de última modificación
+        %n   # Nombre del fichero
+        %i   # Número de inodo
+        %h   # Número de enlaces
+    -f  # Muestra información del sistema de ficheros
+    -L  # Sigue enlaces simbólicos
+    -t  # Muestra la información en formato breve
+
+File                    # Nombre del fichero
+Size                    # Tamaño del fichero en bytes
+Blocks                  # Número de bloques ocupados en disco
+IO Block                # Tamaño del bloque de E/S
+File type               # Tipo de fichero (regular, directorio, enlace simbólico, etc.)
+Device                  # Dispositivo donde está almacenado
+Inode                   # Número de inodo del fichero
+Links                   # Número de enlaces duros
+Access                  # Permisos del fichero en formato simbólico y octal
+Uid / Gid               # ID del usuario y grupo propietario
+Access time (atime)     # Último acceso al fichero
+Modify time (mtime)     # Última modificación del contenido
+Change time (ctime)     # Último cambio en metadatos (permisos, propietario)
+Birth time (si existe)  # Fecha de creación del fichero
+
+[---------- Cadenas y Errores (3) ----------]
+CADENAS
+    atoi()      # Convierte una cadena (ASCII) a entero (int)
+    sprintf()   # Escribe texto formateado en un buffer (como printf pero a una variable)
+    strlen()    # Devuelve la longitud de una cadena (sin contar el \0)
+    strcpy()    # Copia una cadena a otra (Cuidado con el tamaño del destino!)
+    strcat()    # Concatena (une) una cadena al final de otra
+    strcmp()    # Compara dos cadenas (devuelve 0 si son idénticas)
+
+printf()
+    %d o %i	# int	         -> Entero estándar (normalmente 32 bits)
+    %ld	    # long int	     -> Entero largo (normalmente 32 o 64 bits según el sistema)
+    %lld	# long long int	 -> Entero extra largo (mínimo 64 bits)
+    %u	    # unsigned int	 -> Entero sin signo (solo positivos)
+    %lu	    # unsigned long	 -> Entero largo sin signo
+
+=== Macros para saber tipo de archivo ===
+m = struct stat.st_mode
+S_ISREG(m)  # Fichero regular (un archivo normal de texto, ejecutable, etc.)
+S_ISDIR(m)  # Directorio
+S_ISLNK(m)  # Enlace simbólico (soft link)
+S_ISCHR(m)  # Dispositivo de caracteres (ej: terminales /dev/tty)
+S_ISBLK(m)  # Dispositivo de bloques (ej: discos duros /dev/sda)
+S_ISFIFO(m) # FIFO o tubería con nombre (named pipe)
+S_ISSOCK(m) # Socket de red o local
+
+char *ctime(const time_t *timep);   // Convierte un valor de tiempo de calendario (segundos) en una cadena de caracteres terminada en nulo (\0)
+                                    // Devuelve siempre una cadena de 26 caracteres con el formato: Wed Dec 15 13:30:00 2025\n\0
+
+[-------------- chmod (1) --------------]
+$ chmod [opciones] <modo> <archivo> # Cambiar los permisos de acceso (modo) de archivos o directorios. Controla quién puede leer, escribir o ejecutar un archivo
+MODO OCTAL 
+    4: Lectura (r)
+    2: Escritura (w)
+    1: Ejecución (x)
+    0: Sin permisos
+(Dueño | Grupo | Otros)
+MODO SIMBÓLICO
+    Usuarios: u (user/owner), g (group), o (others), a (all)
+    Operadores: + (añadir), - (quitar), = (asignar exactamente)
+    Permisos: r (read), w (write), x (execute)
+
+[-------------- ln (1) --------------]
+$ ln [opciones] <archivo_origen> <nombre_enlace>   # Crea enlaces (vínculos) entre archivos. Permite que un mismo archivo tenga múltiples nombres o rutas de acceso
+    -s (--symbolic): Crea un enlace simbólico en lugar de uno duro
+    -f (--force): Elimina el archivo de destino si ya existe para crear el nuevo enlace
+    -v (--verbose): Muestra el nombre de cada archivo antes de enlazarlo
+    -n (--no-dereference): Trata el destino como un archivo normal si es un enlace simbólico a un directorio (evita crear enlaces dentro del destino)
+TIPOS DE ENLACES
+Enlace Duro (Hard Link): Es el comportamiento por defecto. Crea una nueva entrada en el directorio que apunta al mismo número de inodo que el original
+Enlace Simbólico (Soft/Symbolic Link): Crea un archivo especial que contiene la ruta (un puntero) al archivo original. Es similar a un acceso directo
