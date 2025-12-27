@@ -510,3 +510,35 @@ $ ln [opciones] <archivo_origen> <nombre_enlace>   # Crea enlaces (vínculos) en
 TIPOS DE ENLACES
 Enlace Duro (Hard Link): Es el comportamiento por defecto. Crea una nueva entrada en el directorio que apunta al mismo número de inodo que el original
 Enlace Simbólico (Soft/Symbolic Link): Crea un archivo especial que contiene la ruta (un puntero) al archivo original. Es similar a un acceso directo
+
+[-------------- ps --------------]
+ps  # Informar sobre el estado de los procesos actuales. A diferencia de herramientas interactivas como top, ps genera una captura estática ("foto fija") de los procesos en ejecución en el momento de la invocación.
+    -a              # Todos los procesos de todos los usuarios asociados a una terminal.
+    -u <usuario>    # Formato orientado al usuario (incluye uso de CPU y memoria).
+    -x              # Incluye procesos que no están asociados a ninguna terminal (como los daemons o servicios).
+    -e              # Todos los procesos.
+    -f              # Formato de listado completo (full listing), que muestra la jerarquía mediante el PPID (Parent PID).
+    -H              # Enseña la jerarquía de los procesos.
+    
+usos:
+ps aux
+ps -ef
+
+SIGNIFICADO DE LAS COLUMNAS (aux):
+    UID             # Identificador del usuario que lanzó el proceso (User ID)
+    PID             # Process ID (Identificador único asignado por el kernel)
+    PPID            # Identificador del proceso padre (Parent Process ID)
+    %CPU / %MEM     # Porcentaje de recursos de CPU y memoria física que consume el proceso
+    C               # Utilización de la CPU. Es un valor entero utilizado por el planificador del sistema para priorizar procesos
+    VSZ             # Tamaño de memoria virtual (incluye librerías compartidas y memoria en swap)
+    RSS             # Resident Set Size (Memoria física real que el proceso tiene en RAM)
+    STAT            # Código del estado actual del proceso:
+        R               # En ejecución o ejecutable en la cola de espera (Running)
+        S               # En espera interrumpible (Sleeping), esperando un evento
+        D               # Espera no interrumpible (normalmente E/S de disco)
+        T               # Detenido (Stopped), por una señal de control de tareas
+        Z               # Terminado pero no recolectado por su padre (Zombie)
+    START / TIME    # Hora de inicio del proceso y tiempo total de CPU consumido desde su creación
+    STIME           # Hora de inicio del proceso (Start Time). Si el proceso lleva ejecutándose más de 24 horas, suele mostrar la fecha
+    TTY             # Terminal asociada al proceso. Si aparece un (?), significa que es un proceso del sistema o un demonio (daemon) sin terminal física
+    COMMAND / CMD   # El comando o ejecutable, incluyendo los argumentos o parámetros con los que fue invocado
