@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 				perror("readlink");
 				continue;
 			}
-			printf("%s -> %s", origen, destino);
+			printf("%s -> %s\n", origen, destino);
 		}
 	}
 	return 0;
