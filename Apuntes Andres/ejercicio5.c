@@ -5,7 +5,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main(int argc, char *argv[]){
+
+int main(int argc, char* argv[])
+{
 	//if (argc != 2){
 	//	printf("args: Seg Padre, Seg Hijo\n");
 	//}
@@ -13,7 +15,8 @@ int main(int argc, char *argv[]){
 	int seg_hijo = atoi(argv[2]);
 	pid_t pid = fork();
 
-	switch(pid){
+	switch (pid)
+	{
 	case -1:
 		perror("fork");
 		exit(1);
@@ -42,7 +45,7 @@ int main(int argc, char *argv[]){
 		//fflush(stdout);
 		break;
 	}
-	
+
 	//perror("execl");
 	return 0;
 }

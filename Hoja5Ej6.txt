@@ -1,0 +1,114 @@
+// Hoja 5 ejercicio 6. IMPORTANTE.
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+#include <errno.h>
+
+#include <pthread.h>
+
+
+// Tipo para guardar argumentos de los threads.
+typedef struct _thread_info_t
+{
+    int nThread; // ID para identificar al thread.
+
+    pthread_t id; // ID de POSIX de los threads.
+} thread_info_t;
+
+// Estructura para guardar la acumulacion de suma y el mutex que lo controla. Zona critica.
+typedef struct _shared_link_t
+{
+    pthread_rwlock_t mutex; // Mutex para porteger la zona critica.
+    int value; // Valor compartido.
+} shared_link_t;
+
+// Variable global para simplificar las cosas. Inicializamos el mutex y empezamos en 0.
+shared_link_t num = { PTHREAD_RWLOCK_INITIALIZER, 0 };
+
+#define N_READINGS 5
+#define N_WRITINGS 3
+
+// Funcion para los lectores.
+void* reader(void* info)
+{
+    thread_info_t* _info = (thread_info_t*) info;
+
+    for(int i = 0; i < N_READINGS; i++)
+    {
+        // Bloqueamos la region critica.
+        pthread_rwlock_rdlock (&num.mutex);
+
+        // Hacemos cosas.
+        printf("[Reader %i] dice %i\n", _info->nThread, num.value);
+
+        // Desbloqueamos la region critica.
+        pthread_rwlock_unlock (&num.mutex);
+        
+        usleep(100000); // 0.1s en microsegundos.
+    }
+
+    return NULL;
+}
+
+// Funcion para los escritores.
+void* writer(void* info)
+{
+    thread_info_t* _info = (thread_info_t*) info;
+
+    for(int i = 0; i < N_WRITINGS; i++)
+    {
+        // Bloqueamos la region critica.
+        pthread_rwlock_wrlock (&num.mutex);
+
+        // Hacemos cosas.
+        num.value++;
+        printf("[Writer %i] dice %i\n", _info->nThread, num.value);
+
+        // Desbloqueamos la region critica.
+        pthread_rwlock_unlock (&num.mutex);
+
+        usleep(250000); // 0.25s en microsegundos.
+    }
+
+    return NULL;
+}
+
+// Main.
+int main(int argc, char* argv[])
+{
+    int n_readers = atoi(argv[1]); // Cogemos de la entrada el numero de lectores.
+    int n_writers = atoi(argv[2]); // Cogemos de la entrada el numero de escritores.
+
+    // Array y reserva de memoria para los threads.
+    thread_info_t* threadPool = (thread_info_t*) malloc((n_writers + n_readers) * sizeof(thread_info_t));
+
+    // Creacion de escritores.
+    for(int i = 0; i < n_writers; i++)
+    {
+        threadPool[i].nThread = i;
+        pthread_create(&threadPool[i].id, // ID del thread en POSIX.
+                        NULL, // Atributos.
+                        writer, // Funcion de inicio de thread.
+                        (void*) &threadPool[i]); // Argumentos para la funcion de thread.
+    }
+
+    // Creacion de lectores.
+    for(int i = n_writers; i < (n_writers + n_readers); i++)
+    {
+        threadPool[i].nThread = i;
+        pthread_create(&threadPool[i].id, // ID del thread en POSIX.
+                        NULL, // Atributos.
+                        reader, // Funcion de inicio de thread.
+                        (void*) &threadPool[i]); // Argumentos para la funcion de thread.
+    }
+
+    // Sincronizacion de threads.
+    for(int i = 0; i < (n_writers + n_readers); i++)
+    {
+        pthread_join(threadPool[i].id, NULL);
+        printf("[Thread %i] Terminado.\n", threadPool[i].nThread);
+    }
+
+    return EXIT_SUCCESS;
+}

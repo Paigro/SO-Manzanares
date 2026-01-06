@@ -1,0 +1,24 @@
+------#include<stdlib.h>
+Permite EXIT_FAILURE (1) y EXIT_SUCCES (0).
+------#include<stdio.h>
+Permite salida estandar (printf(), fprint()).
+------#include<sys/stat.h>
+Permite el struct stat.
+Llamada a stat() y lstat().
+Llamadas a MACROS como S_ISREG, ...
+------#include<sys/types.h>
+Permite los tipos del struct stat.
+------#include<unistd.h>
+Funciones POSIX.
+------#include<errno.h>
+Permite la variable global errno que es donde se gaurda cuando falla lstat().
+------#include<string.h>
+Pues eso, strings.
+------#include<time.h>
+Permite usar ctime() y st_atime, ...
+------#include<sys/sysmacros>
+Permite usar macors como major() y minor().
+------#include<dirent.h>
+Para directorios y demas.
+------#include <fcntl.h>
+Para archivos y demas.

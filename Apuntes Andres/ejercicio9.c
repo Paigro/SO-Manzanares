@@ -5,10 +5,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main(int argc, char *argv[]){
-
+int main(int argc, char* argv[])
+{
 	pid_t pid = fork();
-	switch (pid) {
+
+	switch (pid)
+	{
 	case-1:
 		perror("fork");
 		exit(1);
@@ -20,9 +22,9 @@ int main(int argc, char *argv[]){
 	default:
 		int status;
 		wait(&status);
-		if(WIFEXITED(status))
+		if (WIFEXITED(status))
 			printf("El proceso hijo terminó con codigo de salida: %i\n", WIFEXITED(status));
-		else if(WIFSIGNALED(status))
+		else if (WIFSIGNALED(status))
 			printf("El proceso hijo terminó por señal: %i\n", WIFSIGNALED(status));
 		break;
 	}
